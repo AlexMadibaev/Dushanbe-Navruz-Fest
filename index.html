@@ -2,11 +2,11 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Festival Map</title>
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon-96x96.png" />
   <link rel="shortcut icon" href="./assets/favicon.ico" />
   <link rel="manifest" href="./assets/site.webmanifest" />
   <style>
@@ -268,6 +268,11 @@
       .btn { min-height:48px; font-size:15px; }
       .btn-icon { min-width:48px; }
       #zoomReset { min-width:72px; font-weight:800; }
+      .viewport,
+      .stage-wrap,
+      .scale-stage,
+      .canvas,
+      .layer { touch-action:none; }
       .detail { position:fixed; left:10px; right:10px; bottom:10px; max-width:none; max-height:min(34dvh, 250px); overflow:auto; padding:14px 14px calc(14px + var(--safe-bottom)); border-radius:22px; border:1px solid rgba(228,63,147,.14); background:rgba(255,251,248,.96); box-shadow:0 10px 30px rgba(154,86,120,.14); }
       .detail::before { content:""; display:block; width:42px; height:5px; border-radius:999px; background:rgba(139,102,124,.22); margin:0 auto 10px; }
       .detail-head { align-items:flex-start; }
@@ -383,7 +388,6 @@
           <div class="detail is-hidden" id="detail">
             <div class="detail-head">
               <div>
-                <div class="badge" id="detailCategory">Локация</div>
                 <h3 class="detail-title" id="detailTitle">Выберите точку на карте</h3>
                 <p class="detail-text" id="detailText">Здесь появятся название зоны, категория и краткая информация.</p>
               </div>
@@ -563,22 +567,22 @@
       maxZoom: 2.4,
       zoomStep: 0.2,
       points: [
-        { id: "1", numberLabel: "1", title: "ДАРОМАД", label: "НУҚТАИ ФУРӮШИ ЧИПТАҲО", category: "Навигация", description: "", x: 85.3, y: 74.2, color: "#e43f93", icon: "entrance", link: "", visible: true },
-        { id: "2", numberLabel: "2", title: "НУҚТАИ ЧОПИ РАСМҲО", label: "ЧОПИ РАСМҲО", category: "Фото", description: "", x: 94.9, y: 75.1, color: "#e43f93", icon: "print", link: "", visible: true },
-        { id: "3", numberLabel: "3", title: "САҲНА", label: "САҲНА", category: "Саҳна", description: "", x: 51.7, y: 17.3, color: "#e43f93", icon: "stage", link: "", visible: true },
-        { id: "4", numberLabel: "4", title: "МАЙДОНЧАИ НАМОИШИ ГУЛҲО", label: "НАМОИШИ ГУЛҲО", category: "Гулҳо", description: "", x: 35.8, y: 75.6, color: "#e43f93", icon: "flowers", link: "", visible: true },
-        { id: "5", numberLabel: "5", title: "МАЙДОНЧАИ БАРОИ КӮДАКОН", label: "БАРОИ КӮДАКОН", category: "Кӯдакон", description: "", x: 80.1, y: 60.5, color: "#e43f93", icon: "kids", link: "", visible: true },
-        { id: "6", numberLabel: "6", title: "НАМОЯНДАИ РАЁСАТИ ФАРҲАНГИ МАҚОМОТИ ИҶРОИЯИ ҲОКИМИЯТИ ДАВЛАТИИ ШАҲРИ ДУШАНБЕ", label: "РАЁСАТИ ФАРҲАНГ", category: "Фарҳанг", description: "", x: 13.5, y: 54.1, color: "#e43f93", icon: "theater", link: "", visible: true },
-        { id: "7", numberLabel: "7", title: "МАЙДОНЧАИ ҲУНАРҲОИ МАРДУМӢ", label: "ҲУНАРҲОИ МАРДУМӢ", category: "Ҳунарҳо", description: "", x: 65.3, y: 76.5, color: "#e43f93", icon: "crafts", link: "", visible: true },
-        { id: "8", numberLabel: "8", title: "МАЙДОНЧАИ ҒИЗО ВА НӮШОКИҲО", label: "ҒИЗО ВА НӮШОКИҲО", category: "Ғизо", description: "", x: 13.6, y: 26.7, color: "#e43f93", icon: "food", link: "", visible: true },
-        { id: "9", numberLabel: "9", title: "МАЙДОНЧАИ БОЗӢ", label: "БОЗӢ", category: "Бозӣ", description: "", x: 20, y: 40.8, color: "#e43f93", icon: "games", link: "", visible: true },
-        { id: "10", numberLabel: "10", title: "ФАЪОЛИЯТҲОИ ОИЛАВӢ", label: "ОИЛАВӢ", category: "Оила", description: "", x: 87.2, y: 46.9, color: "#e43f93", icon: "family", link: "", visible: true },
-        { id: "11", numberLabel: "11", title: "СТЕНДҲО АЗ САФАРАТҲО", label: "АЗ САФАРАТҲО", category: "Стендҳо", description: "", x: 84.5, y: 32.5, color: "#e43f93", icon: "embassy", link: "", visible: true },
-        { id: "12", numberLabel: "12", title: "МИНТАҚАИ ЭҶОДӢ", label: "ЭҶОДӢ", category: "Эҷодӣ", description: "", x: 83.5, y: 21.8, color: "#e43f93", icon: "creative", link: "", visible: true },
-        { id: "13", numberLabel: "13", title: "ЁРИИ ТАЪҶИЛИИ ТИББӢ / ХАДАМОТИ ОТАШНИШОНӢ", label: "ТИББӢ / ОТАШНИШОНӢ", category: "Хадамоти фаврӣ", description: "", x: 95.6, y: 56.8, color: "#e43f93", icon: "emergency", link: "", visible: true },
-        { id: "14", numberLabel: "14", title: "БИО-ҲОҶАТХОНА", label: "БИО-ҲОҶАТХОНА", category: "Санитарӣ", description: "", x: 79.3, y: 11.7, color: "#e43f93", icon: "wc", link: "", visible: true },
-        { id: "15", numberLabel: "15", title: "МАЙДОНЧАИ ВАРЗИШӢ", label: "ВАРЗИШӢ", category: "Варзиш", description: "", x: 49.5, y: 50.9, color: "#e43f93", icon: "sports", link: "", visible: true },
-        { id: "16", numberLabel: "16", title: "БАРОМАД", label: "БАРОМАД", category: "Навигация", description: "", x: 12, y: 86.4, color: "#e43f93", icon: "exit", link: "", visible: true }
+        { id: "1", numberLabel: "1", title: "ВХОД", label: "ТОЧКА ПРОДАЖИ БИЛЕТОВ", category: "Навигация", description: "Главный вход на фестиваль и зона покупки или проверки билетов.", x: 85.3, y: 74.2, color: "#e43f93", icon: "entrance", link: "", visible: true },
+        { id: "2", numberLabel: "2", title: "ТОЧКА ПЕЧАТИ ФОТО", label: "ПЕЧАТЬ ФОТО", category: "Фото", description: "Здесь можно распечатать памятные фотографии прямо во время фестиваля.", x: 94.9, y: 75.1, color: "#e43f93", icon: "print", link: "", visible: true },
+        { id: "3", numberLabel: "3", title: "СЦЕНА", label: "СЦЕНА", category: "Сцена", description: "Главная сцена с концертной программой, выступлениями и ведущими.", x: 51.7, y: 17.3, color: "#e43f93", icon: "stage", link: "", visible: true },
+        { id: "4", numberLabel: "4", title: "ПЛОЩАДКА ВЫСТАВКИ ЦВЕТОВ", label: "ВЫСТАВКА ЦВЕТОВ", category: "Цветы", description: "Декоративная зона с цветочными композициями и праздничным оформлением.", x: 35.8, y: 75.6, color: "#e43f93", icon: "flowers", link: "", visible: true },
+        { id: "5", numberLabel: "5", title: "ДЕТСКАЯ ПЛОЩАДКА", label: "ДЛЯ ДЕТЕЙ", category: "Детская зона", description: "Пространство для детей с играми, развлечениями и семейным отдыхом.", x: 80.1, y: 60.5, color: "#e43f93", icon: "kids", link: "", visible: true },
+        { id: "6", numberLabel: "6", title: "ПРЕДСТАВИТЕЛЬСТВО УПРАВЛЕНИЯ КУЛЬТУРЫ ИСПОЛНИТЕЛЬНОГО ОРГАНА ГОСУДАРСТВЕННОЙ ВЛАСТИ ГОРОДА ДУШАНБЕ", label: "УПРАВЛЕНИЕ КУЛЬТУРЫ", category: "Культура", description: "Информационная и культурная площадка городского управления культуры Душанбе.", x: 13.5, y: 54.1, color: "#e43f93", icon: "theater", link: "", visible: true },
+        { id: "7", numberLabel: "7", title: "ПЛОЩАДКА НАРОДНЫХ РЕМЁСЕЛ", label: "НАРОДНЫЕ РЕМЁСЛА", category: "Ремёсла", description: "Место, где представлены изделия мастеров и традиционные ремёсла.", x: 65.3, y: 76.5, color: "#e43f93", icon: "crafts", link: "", visible: true },
+        { id: "8", numberLabel: "8", title: "ПЛОЩАДКА ЕДЫ И НАПИТКОВ", label: "ЕДА И НАПИТКИ", category: "Еда", description: "Фуд-зона с блюдами, напитками и угощениями для гостей фестиваля.", x: 13.6, y: 26.7, color: "#e43f93", icon: "food", link: "", visible: true },
+        { id: "9", numberLabel: "9", title: "ИГРОВАЯ ПЛОЩАДКА", label: "ИГРЫ", category: "Игры", description: "Зона активных игр и интерактивных развлечений для гостей.", x: 20, y: 40.8, color: "#e43f93", icon: "games", link: "", visible: true },
+        { id: "10", numberLabel: "10", title: "СЕМЕЙНЫЕ АКТИВНОСТИ", label: "СЕМЕЙНАЯ ЗОНА", category: "Семья", description: "Площадка с программой для семей, совместных занятий и отдыха.", x: 87.2, y: 46.9, color: "#e43f93", icon: "family", link: "", visible: true },
+        { id: "11", numberLabel: "11", title: "СТЕНДЫ ПОСОЛЬСТВ", label: "СТЕНДЫ ПОСОЛЬСТВ", category: "Стенды", description: "Стенды международных участников с культурными и информационными материалами.", x: 84.5, y: 32.5, color: "#e43f93", icon: "embassy", link: "", visible: true },
+        { id: "12", numberLabel: "12", title: "ТВОРЧЕСКАЯ ЗОНА", label: "ТВОРЧЕСТВО", category: "Творчество", description: "Творческое пространство для мастер-классов, рисунка и ручных занятий.", x: 83.5, y: 21.8, color: "#e43f93", icon: "creative", link: "", visible: true },
+        { id: "13", numberLabel: "13", title: "СКОРАЯ ПОМОЩЬ / ПОЖАРНАЯ СЛУЖБА", label: "ЭКСТРЕННАЯ ПОМОЩЬ", category: "Экстренные службы", description: "Пункт оперативной помощи, куда можно обратиться в экстренной ситуации.", x: 95.6, y: 56.8, color: "#e43f93", icon: "emergency", link: "", visible: true },
+        { id: "14", numberLabel: "14", title: "БИО-ТУАЛЕТ", label: "БИО-ТУАЛЕТ", category: "Санитария", description: "Санитарная зона с био-туалетами для посетителей фестиваля.", x: 79.3, y: 11.7, color: "#e43f93", icon: "wc", link: "", visible: true },
+        { id: "15", numberLabel: "15", title: "СПОРТИВНАЯ ПЛОЩАДКА", label: "СПОРТ", category: "Спорт", description: "Площадка для спортивных активностей, игр и показательных выступлений.", x: 49.5, y: 50.9, color: "#e43f93", icon: "sports", link: "", visible: true },
+        { id: "16", numberLabel: "16", title: "ВЫХОД", label: "ВЫХОД", category: "Навигация", description: "Основной выход с территории фестиваля и ориентир для завершения маршрута.", x: 12, y: 86.4, color: "#e43f93", icon: "exit", link: "", visible: true }
       ]
     };
 
@@ -616,26 +620,30 @@
     ];
     const POINT_ICON_LOOKUP = Object.fromEntries(POINT_ICON_SET.map((icon) => [icon.id, icon]));
         const LOCAL_ADMIN_ZONE_POINTS = [
-      { id: "1", numberLabel: "1", title: "ДАРОМАД", label: "НУҚТАИ ФУРӮШИ ЧИПТАҲО", category: "Навигация", description: "", x: 14, y: 24, color: "#e43f93", icon: "ticket", link: "", visible: true },
-      { id: "2", numberLabel: "2", title: "НУҚТАИ ЧОПИ РАСМҲО", label: "ЧОПИ РАСМҲО", category: "Фото", description: "", x: 54, y: 24, color: "#e43f93", icon: "print", link: "", visible: true },
-      { id: "3", numberLabel: "3", title: "САҲНА", label: "САҲНА", category: "Саҳна", description: "", x: 15, y: 35, color: "#e43f93", icon: "stage", link: "", visible: true },
-      { id: "4", numberLabel: "4", title: "МАЙДОНЧАИ НАМОИШИ ГУЛҲО", label: "НАМОИШИ ГУЛҲО", category: "Гулҳо", description: "", x: 55, y: 35, color: "#e43f93", icon: "flowers", link: "", visible: true },
-      { id: "5", numberLabel: "5", title: "МАЙДОНЧАИ БАРОИ КӮДАКОН", label: "БАРОИ КӮДАКОН", category: "Кӯдакон", description: "", x: 15, y: 46, color: "#e43f93", icon: "kids", link: "", visible: true },
-      { id: "6", numberLabel: "6", title: "НАМОЯНДАИ РАЁСАТИ ФАРҲАНГИ МАҚОМОТИ ИҶРОИЯИ ҲОКИМИЯТИ ДАВЛАТИИ ШАҲРИ ДУШАНБЕ", label: "РАЁСАТИ ФАРҲАНГ", category: "Фарҳанг", description: "", x: 55, y: 46, color: "#e43f93", icon: "theater", link: "", visible: true },
-      { id: "7", numberLabel: "7", title: "МАЙДОНЧАИ ҲУНАРҲОИ МАРДУМӢ", label: "ҲУНАРҲОИ МАРДУМӢ", category: "Ҳунарҳо", description: "", x: 15, y: 57, color: "#e43f93", icon: "crafts", link: "", visible: true },
-      { id: "8", numberLabel: "8", title: "МАЙДОНЧАИ ҒИЗО ВА НӮШОКИҲО", label: "ҒИЗО ВА НӮШОКИҲО", category: "Ғизо", description: "", x: 55, y: 57, color: "#e43f93", icon: "food", link: "", visible: true },
-      { id: "9", numberLabel: "9", title: "МАЙДОНЧАИ БОЗӢ", label: "БОЗӢ", category: "Бозӣ", description: "", x: 15, y: 68, color: "#e43f93", icon: "games", link: "", visible: true },
-      { id: "10", numberLabel: "10", title: "ФАЪОЛИЯТҲОИ ОИЛАВӢ", label: "ОИЛАВӢ", category: "Оила", description: "", x: 55, y: 68, color: "#e43f93", icon: "family", link: "", visible: true },
-      { id: "11", numberLabel: "11", title: "СТЕНДҲО АЗ САФАРАТҲО", label: "АЗ САФАРАТҲО", category: "Стендҳо", description: "", x: 15, y: 79, color: "#e43f93", icon: "embassy", link: "", visible: true },
-      { id: "12", numberLabel: "12", title: "МИНТАҚАИ ЭҶОДӢ", label: "ЭҶОДӢ", category: "Эҷодӣ", description: "", x: 55, y: 79, color: "#e43f93", icon: "creative", link: "", visible: true },
-      { id: "13", numberLabel: "13", title: "ЁРИИ ТАЪҶИЛИИ ТИББӢ / ХАДАМОТИ ОТАШНИШОНӢ", label: "ТИББӢ / ОТАШНИШОНӢ", category: "Хадамоти фаврӣ", description: "", x: 15, y: 90, color: "#e43f93", icon: "emergency", link: "", visible: true },
-      { id: "14", numberLabel: "14", title: "БИО-ҲОҶАТХОНА", label: "БИО-ҲОҶАТХОНА", category: "Санитарӣ", description: "", x: 55, y: 90, color: "#e43f93", icon: "wc", link: "", visible: true },
-      { id: "15", numberLabel: "15", title: "МАЙДОНЧАИ ВАРЗИШӢ", label: "ВАРЗИШӢ", category: "Варзиш", description: "", x: 15, y: 97, color: "#e43f93", icon: "sports", link: "", visible: true },
-      { id: "16", numberLabel: "16", title: "БАРОМАД", label: "БАРОМАД", category: "Навигация", description: "", x: 55, y: 97, color: "#e43f93", icon: "exit", link: "", visible: true }
+      { id: "1", numberLabel: "1", title: "ВХОД", label: "ТОЧКА ПРОДАЖИ БИЛЕТОВ", category: "Навигация", description: "Главный вход на фестиваль и зона покупки или проверки билетов.", x: 14, y: 24, color: "#e43f93", icon: "ticket", link: "", visible: true },
+      { id: "2", numberLabel: "2", title: "ТОЧКА ПЕЧАТИ ФОТО", label: "ПЕЧАТЬ ФОТО", category: "Фото", description: "Здесь можно распечатать памятные фотографии прямо во время фестиваля.", x: 54, y: 24, color: "#e43f93", icon: "print", link: "", visible: true },
+      { id: "3", numberLabel: "3", title: "СЦЕНА", label: "СЦЕНА", category: "Сцена", description: "Главная сцена с концертной программой, выступлениями и ведущими.", x: 15, y: 35, color: "#e43f93", icon: "stage", link: "", visible: true },
+      { id: "4", numberLabel: "4", title: "ПЛОЩАДКА ВЫСТАВКИ ЦВЕТОВ", label: "ВЫСТАВКА ЦВЕТОВ", category: "Цветы", description: "Декоративная зона с цветочными композициями и праздничным оформлением.", x: 55, y: 35, color: "#e43f93", icon: "flowers", link: "", visible: true },
+      { id: "5", numberLabel: "5", title: "ДЕТСКАЯ ПЛОЩАДКА", label: "ДЛЯ ДЕТЕЙ", category: "Детская зона", description: "Пространство для детей с играми, развлечениями и семейным отдыхом.", x: 15, y: 46, color: "#e43f93", icon: "kids", link: "", visible: true },
+      { id: "6", numberLabel: "6", title: "ПРЕДСТАВИТЕЛЬСТВО УПРАВЛЕНИЯ КУЛЬТУРЫ ИСПОЛНИТЕЛЬНОГО ОРГАНА ГОСУДАРСТВЕННОЙ ВЛАСТИ ГОРОДА ДУШАНБЕ", label: "УПРАВЛЕНИЕ КУЛЬТУРЫ", category: "Культура", description: "Информационная и культурная площадка городского управления культуры Душанбе.", x: 55, y: 46, color: "#e43f93", icon: "theater", link: "", visible: true },
+      { id: "7", numberLabel: "7", title: "ПЛОЩАДКА НАРОДНЫХ РЕМЁСЕЛ", label: "НАРОДНЫЕ РЕМЁСЛА", category: "Ремёсла", description: "Место, где представлены изделия мастеров и традиционные ремёсла.", x: 15, y: 57, color: "#e43f93", icon: "crafts", link: "", visible: true },
+      { id: "8", numberLabel: "8", title: "ПЛОЩАДКА ЕДЫ И НАПИТКОВ", label: "ЕДА И НАПИТКИ", category: "Еда", description: "Фуд-зона с блюдами, напитками и угощениями для гостей фестиваля.", x: 55, y: 57, color: "#e43f93", icon: "food", link: "", visible: true },
+      { id: "9", numberLabel: "9", title: "ИГРОВАЯ ПЛОЩАДКА", label: "ИГРЫ", category: "Игры", description: "Зона активных игр и интерактивных развлечений для гостей.", x: 15, y: 68, color: "#e43f93", icon: "games", link: "", visible: true },
+      { id: "10", numberLabel: "10", title: "СЕМЕЙНЫЕ АКТИВНОСТИ", label: "СЕМЕЙНАЯ ЗОНА", category: "Семья", description: "Площадка с программой для семей, совместных занятий и отдыха.", x: 55, y: 68, color: "#e43f93", icon: "family", link: "", visible: true },
+      { id: "11", numberLabel: "11", title: "СТЕНДЫ ПОСОЛЬСТВ", label: "СТЕНДЫ ПОСОЛЬСТВ", category: "Стенды", description: "Стенды международных участников с культурными и информационными материалами.", x: 15, y: 79, color: "#e43f93", icon: "embassy", link: "", visible: true },
+      { id: "12", numberLabel: "12", title: "ТВОРЧЕСКАЯ ЗОНА", label: "ТВОРЧЕСТВО", category: "Творчество", description: "Творческое пространство для мастер-классов, рисунка и ручных занятий.", x: 55, y: 79, color: "#e43f93", icon: "creative", link: "", visible: true },
+      { id: "13", numberLabel: "13", title: "СКОРАЯ ПОМОЩЬ / ПОЖАРНАЯ СЛУЖБА", label: "ЭКСТРЕННАЯ ПОМОЩЬ", category: "Экстренные службы", description: "Пункт оперативной помощи, куда можно обратиться в экстренной ситуации.", x: 15, y: 90, color: "#e43f93", icon: "emergency", link: "", visible: true },
+      { id: "14", numberLabel: "14", title: "БИО-ТУАЛЕТ", label: "БИО-ТУАЛЕТ", category: "Санитария", description: "Санитарная зона с био-туалетами для посетителей фестиваля.", x: 55, y: 90, color: "#e43f93", icon: "wc", link: "", visible: true },
+      { id: "15", numberLabel: "15", title: "СПОРТИВНАЯ ПЛОЩАДКА", label: "СПОРТ", category: "Спорт", description: "Площадка для спортивных активностей, игр и показательных выступлений.", x: 15, y: 97, color: "#e43f93", icon: "sports", link: "", visible: true },
+      { id: "16", numberLabel: "16", title: "ВЫХОД", label: "ВЫХОД", category: "Навигация", description: "Основной выход с территории фестиваля и ориентир для завершения маршрута.", x: 55, y: 97, color: "#e43f93", icon: "exit", link: "", visible: true }
     ];
     const state = {
       selectedPointId: null,
       currentZoom: 1,
+      activePointers: new Map(),
+      pinchZooming: false,
+      pinchStartDistance: 0,
+      pinchStartZoom: 1,
       addMode: false,
       moveMode: LOCAL_ADMIN_STUDIO,
       dragging: false,
@@ -712,7 +720,6 @@
       mapContextMenu: $("mapContextMenu"),
       contextCreatePoint: $("contextCreatePoint"),
       detail: $("detail"),
-      detailCategory: $("detailCategory"),
       detailTitle: $("detailTitle"),
       detailText: $("detailText"),
       detailMeta: $("detailMeta"),
@@ -1397,7 +1404,6 @@
       const point = getSelectedPoint();
       if (!point) {
         refs.detail.classList.add("is-hidden");
-        refs.detailCategory.textContent = "Подсказка";
         refs.detailTitle.textContent = "Выберите точку на карте";
         refs.detailText.textContent = "Здесь будет появляться информация о локации.";
         refs.detailLink.hidden = true;
@@ -1406,7 +1412,6 @@
         return;
       }
       refs.detail.classList.remove("is-hidden");
-      refs.detailCategory.textContent = point.category || "Общее";
       refs.detailTitle.textContent = point.title || "Без названия";
       refs.detailText.textContent = point.description || "Описание пока не заполнено.";
       refs.selectionBadge.textContent = `${point.numberLabel || "?"} · ${point.label || point.title} · ${point.x}% / ${point.y}%`;
@@ -1414,10 +1419,7 @@
       const iconMeta = document.createElement("span");
       iconMeta.className = "badge";
       iconMeta.innerHTML = `${iconSvg(point.icon, "detail-badge-icon")}<strong>${escapeHtml(iconLabel(point.icon))}</strong>`;
-      const visibility = document.createElement("span");
-      visibility.className = `badge${point.visible ? "" : " hidden"}`;
-      visibility.textContent = point.visible ? "Видна гостям" : "Скрыта";
-      refs.detailMeta.append(iconMeta, visibility);
+      refs.detailMeta.append(iconMeta);
       if (point.link) {
         refs.detailLink.hidden = false;
         refs.detailLink.href = point.link;
@@ -1479,6 +1481,36 @@
         x: round(clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100)),
         y: round(clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100))
       };
+    }
+    function pinchDistance(points) {
+      if (points.length < 2) return 0;
+      const [first, second] = points;
+      const dx = first.clientX - second.clientX;
+      const dy = first.clientY - second.clientY;
+      return Math.hypot(dx, dy);
+    }
+    function refreshPinchState() {
+      const activeTouchPointers = Array.from(state.activePointers.values());
+      if (activeTouchPointers.length < 2) {
+        state.pinchZooming = false;
+        state.pinchStartDistance = 0;
+        state.pinchStartZoom = state.currentZoom;
+        return;
+      }
+      const nextDistance = pinchDistance(activeTouchPointers);
+      if (!state.pinchZooming) {
+        state.pinchZooming = true;
+        state.pinchStartDistance = nextDistance;
+        state.pinchStartZoom = state.currentZoom;
+        stopDragging();
+        return;
+      }
+      if (!state.pinchStartDistance) return;
+      const nextZoom = clamp((nextDistance / state.pinchStartDistance) * state.pinchStartZoom, CONFIG.minZoom, CONFIG.maxZoom);
+      if (Math.abs(nextZoom - state.currentZoom) < 0.01) return;
+      state.currentZoom = Math.round(nextZoom * 100) / 100;
+      updateMode();
+      updateCanvasSize();
     }
     function createPoint(x = 50, y = 50) {
       const point = normalizePoint({
@@ -1627,8 +1659,21 @@
     });
     refs.stageWrap.addEventListener("contextmenu", handleMapContextMenu, true);
     refs.stageWrap.addEventListener("pointerdown", handleMapSecondaryPointer, true);
+    refs.stageWrap.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "touch") return;
+      state.activePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+      refreshPinchState();
+    }, true);
 
     window.addEventListener("pointermove", (event) => {
+      if (state.activePointers.has(event.pointerId)) {
+        state.activePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+      }
+      if (state.pinchZooming) {
+        event.preventDefault();
+        refreshPinchState();
+        return;
+      }
       if (!state.dragging || !state.draggedPointId) return;
       const point = CONFIG.points.find((item) => item.id === state.draggedPointId);
       if (!point) return;
@@ -1658,8 +1703,16 @@
       }
     };
 
+    const clearPointer = (event) => {
+      if (!state.activePointers.has(event.pointerId)) return;
+      state.activePointers.delete(event.pointerId);
+      refreshPinchState();
+    };
+
     window.addEventListener("pointerup", stopDragging);
     window.addEventListener("pointercancel", stopDragging);
+    window.addEventListener("pointerup", clearPointer);
+    window.addEventListener("pointercancel", clearPointer);
     window.addEventListener("resize", hideContextMenu);
     refs.viewport.addEventListener("scroll", hideContextMenu);
     window.addEventListener("keydown", (event) => {
