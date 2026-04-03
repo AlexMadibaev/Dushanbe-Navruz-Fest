@@ -23,6 +23,7 @@
       --accent-line:rgba(228,63,147,.26); --danger:#ef4444; --success:#22c55e; --shadow:0 20px 48px rgba(154,86,120,.14);
       --safe-top:max(16px, env(safe-area-inset-top)); --safe-right:max(16px, env(safe-area-inset-right));
       --safe-bottom:max(16px, env(safe-area-inset-bottom)); --safe-left:max(16px, env(safe-area-inset-left));
+      --welcome-cta-width:min(100%, 320px);
     }
     * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     html,body { margin:0; min-height:100%; background:
@@ -34,22 +35,29 @@
     button { border:0; background:none; padding:0; }
     img { max-width:100%; }
     [hidden] { display:none !important; }
-    .preloader { position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;
-      background:radial-gradient(circle at top, rgba(228,63,147,.16), transparent 25%), linear-gradient(180deg, #fff8f5 0%, #fff2ea 100%);
-      transition:opacity .35s ease, visibility .35s ease; }
-    .preloader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
-    .preloader-logo-wrap { position:relative; width:min(180px, 42vw); display:block; }
-    .preloader-logo { width:100%; display:block; filter:grayscale(1) saturate(0) brightness(1.02) drop-shadow(0 14px 24px rgba(154,86,120,.10)); opacity:0; transform:translateY(10px) scale(.985); animation:logoColorFill 1.5s cubic-bezier(.22,1,.36,1) forwards; }
     .welcome-modal { position:fixed; inset:0; z-index:190; display:grid; place-items:center; padding:18px; background:rgba(255,246,241,.56); backdrop-filter:blur(12px); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .28s ease, visibility .28s ease; }
     .welcome-modal.active { opacity:1; visibility:visible; pointer-events:auto; }
-    .welcome-card { width:min(100%, 460px); padding:24px 22px 22px; border-radius:30px; background:linear-gradient(180deg, rgba(255,252,249,.98), rgba(255,245,240,.96)); border:1px solid rgba(226,116,169,.16); box-shadow:0 24px 54px rgba(154,86,120,.18); text-align:center; color:var(--text); transform:translateY(10px) scale(.985); transition:transform .3s cubic-bezier(.22,1,.36,1); }
+    .welcome-card { width:min(100%, 460px); padding:14px 20px 18px; border-radius:30px; background:linear-gradient(180deg, rgba(255,252,249,.98), rgba(255,245,240,.96)); border:1px solid rgba(226,116,169,.16); box-shadow:0 24px 54px rgba(154,86,120,.18); text-align:center; color:var(--text); transform:translateY(10px) scale(.985); transition:transform .3s cubic-bezier(.22,1,.36,1); display:flex; flex-direction:column; justify-content:center; gap:10px; }
     .welcome-modal.active .welcome-card { transform:translateY(0) scale(1); }
-    .welcome-logo { width:min(156px, 42vw); margin:0 auto 16px; display:block; filter:drop-shadow(0 12px 22px rgba(154,86,120,.12)); }
-    .welcome-kicker { margin:0 0 10px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-    .welcome-title { margin:0 0 10px; font:800 clamp(26px, 6vw, 34px)/1.04 "Golos Text","Segoe UI",sans-serif; }
-    .welcome-text { margin:0 0 18px; color:var(--muted); font-size:15px; line-height:1.55; }
-    .welcome-actions { display:flex; gap:10px; justify-content:center; }
-    .welcome-btn { min-width:180px; }
+    .welcome-logo-wrap { width:calc(var(--welcome-cta-width) * 0.85); height:calc(var(--welcome-cta-width) * 0.85); margin:0 auto; display:grid; place-items:center; justify-self:center; align-self:center; }
+    .welcome-logo { width:100%; height:100%; display:block; object-fit:contain; filter:drop-shadow(0 14px 26px rgba(154,86,120,.14)); }
+    .welcome-title { margin:0; font:800 clamp(24px, 5.4vw, 32px)/1.02 "Golos Text","Segoe UI",sans-serif; }
+    .welcome-text { margin:0; color:var(--muted); font-size:14px; line-height:1.42; }
+    .welcome-actions { display:flex; gap:10px; justify-content:center; align-items:center; }
+    .welcome-btn { position:relative; width:var(--welcome-cta-width); min-height:54px; overflow:hidden; isolation:isolate; margin:0 auto; }
+    .welcome-btn .label { position:relative; z-index:2; }
+    .welcome-btn::before { content:""; position:absolute; inset:0; width:var(--welcome-progress, 16%); border-radius:inherit; background:linear-gradient(90deg, rgba(228,63,147,.22), rgba(249,115,22,.26)); z-index:1; transition:width .3s ease, opacity .2s ease; }
+    .welcome-btn.loading { color:var(--text); background:rgba(255,245,240,.92); border-color:rgba(226,116,169,.18); }
+    .welcome-btn.loading::after { content:""; position:absolute; inset:0; background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.42) 45%, transparent 70%); transform:translateX(-120%); animation:welcomeSweep 1.2s linear infinite; z-index:1; }
+    .welcome-btn:disabled { cursor:default; transform:none; }
+    .welcome-btn.ready::before,
+    .welcome-btn.ready::after { opacity:0; animation:none; }
+    .welcome-btn.ready { color:#fff; background:#e43f93; border-color:#e43f93; }
+    .welcome-status { margin:0; font-size:12px; line-height:1.35; color:var(--muted); }
+    @keyframes welcomeSweep {
+      from { transform:translateX(-120%); }
+      to { transform:translateX(120%); }
+    }
     @keyframes logoReveal {
       from { opacity:0; transform:translateY(14px) scale(.94); }
       to { opacity:1; transform:translateY(0) scale(1); }
@@ -248,11 +256,14 @@
     }
     @media (max-width:760px) {
       .welcome-modal { padding:14px; }
-      .welcome-card { width:100%; padding:22px 18px 18px; border-radius:26px; }
-      .welcome-logo { width:min(140px, 40vw); margin-bottom:14px; }
-      .welcome-text { font-size:14px; }
+      .welcome-card { width:100%; padding:12px 16px 14px; border-radius:26px; min-height:auto; gap:8px; }
+      .welcome-logo-wrap { width:calc(var(--welcome-cta-width) * 0.85); height:calc(var(--welcome-cta-width) * 0.85); }
+      .welcome-logo { width:100%; height:100%; }
+      .welcome-title { font-size:clamp(18px, 7vw, 24px); }
+      .welcome-text { font-size:13px; line-height:1.35; }
+      .welcome-status { font-size:11px; }
       .welcome-actions { flex-direction:column; }
-      .welcome-btn { width:100%; min-width:0; }
+      .welcome-btn { width:var(--welcome-cta-width); min-width:0; min-height:44px; }
       .workspace { min-height:100dvh; display:block; }
       .map-shell { min-height:100dvh; display:block; }
       .stage-wrap { flex:none; min-height:100dvh; border-radius:0; background:transparent; }
@@ -294,20 +305,18 @@
   </style>
 </head>
 <body>
-  <div class="preloader" id="preloader">
-    <div class="preloader-logo-wrap" aria-hidden="true">
-      <img class="preloader-logo" src="./assets/navruz-logo.svg" alt="Navruz logo" width="1054" height="599" />
-    </div>
-    <div class="hint">Подготавливаем интерактивную карту...</div>
-  </div>
-
-  <div class="welcome-modal" id="welcomeModal" aria-hidden="true">
+  <div class="welcome-modal active" id="welcomeModal" aria-hidden="false">
     <div class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
-      <img class="welcome-logo" src="./assets/navruz-logo.svg" alt="Navruz Fest logo" width="1054" height="599" />
+      <div class="welcome-logo-wrap">
+        <img class="welcome-logo" src="./assets/navruz-logo.svg" alt="Navruz Fest logo" width="1054" height="599" />
+      </div>
       <h1 class="welcome-title" id="welcomeTitle">Добро пожаловать на Dushanbe Navruz Fest</h1>
       <p class="welcome-text">Откройте интерактивную карту фестиваля, чтобы быстро находить сцены, зоны активностей, сервисные точки и ключевые локации площадки.</p>
+      <p class="welcome-status" id="welcomeStatus">Подготавливаем карту для открытия…</p>
       <div class="welcome-actions">
-        <button class="btn btn-primary welcome-btn" id="welcomeEnter" type="button">Открыть карту</button>
+        <button class="btn welcome-btn loading" id="welcomeEnter" type="button" disabled aria-disabled="true">
+          <span class="label">Загружаем карту…</span>
+        </button>
       </div>
     </div>
   </div>
@@ -692,9 +701,9 @@
 
     const $ = (id) => document.getElementById(id);
     const refs = {
-      preloader: $("preloader"),
       welcomeModal: $("welcomeModal"),
       welcomeEnter: $("welcomeEnter"),
+      welcomeStatus: $("welcomeStatus"),
       logoSlot: $("logoSlot"),
       logoImage: $("logoImage"),
       heroTitle: $("heroTitle"),
@@ -1858,12 +1867,14 @@
       refs.canvas.classList.remove("empty");
       refs.mapImage.hidden = false;
       updateCanvasSize();
+      updateWelcomeState();
     });
     refs.mapImage.addEventListener("error", () => {
       state.mapReady = false;
       refs.canvas.classList.add("empty");
       refs.mapImage.hidden = true;
       updateCanvasSize();
+      updateWelcomeState();
     });
     if (refs.mapImage.complete) {
       if (refs.mapImage.naturalWidth > 0) {
@@ -1876,6 +1887,7 @@
         refs.mapImage.hidden = true;
       }
       updateCanvasSize();
+      updateWelcomeState();
     }
 
     function openWelcomeModal() {
@@ -1884,22 +1896,36 @@
     }
 
     function closeWelcomeModal() {
+      if (!state.mapReady) return;
       refs.welcomeModal?.classList.remove("active");
       refs.welcomeModal?.setAttribute("aria-hidden", "true");
     }
+    function updateWelcomeState() {
+      if (!refs.welcomeEnter) return;
+      const label = refs.welcomeEnter.querySelector(".label");
+      if (state.mapReady) {
+        refs.welcomeEnter.disabled = false;
+        refs.welcomeEnter.setAttribute("aria-disabled", "false");
+        refs.welcomeEnter.classList.remove("loading");
+        refs.welcomeEnter.classList.add("ready", "btn-primary");
+        refs.welcomeEnter.style.setProperty("--welcome-progress", "100%");
+        if (label) label.textContent = "Открыть карту";
+        if (refs.welcomeStatus) refs.welcomeStatus.textContent = "";
+        return;
+      }
+      refs.welcomeEnter.disabled = true;
+      refs.welcomeEnter.setAttribute("aria-disabled", "true");
+      refs.welcomeEnter.classList.add("loading");
+      refs.welcomeEnter.classList.remove("ready", "btn-primary");
+      refs.welcomeEnter.style.setProperty("--welcome-progress", "72%");
+      if (label) label.textContent = "Загружаем карту…";
+      if (refs.welcomeStatus) refs.welcomeStatus.textContent = "Подготавливаем карту для открытия. Кнопка станет активной сразу после загрузки.";
+    }
 
     refs.welcomeEnter?.addEventListener("click", closeWelcomeModal);
-    refs.welcomeModal?.addEventListener("click", (event) => {
-      if (event.target === refs.welcomeModal) closeWelcomeModal();
-    });
+    updateWelcomeState();
 
     window.addEventListener("resize", updateCanvasSize);
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        refs.preloader.classList.add("hidden");
-        openWelcomeModal();
-      }, 1500);
-    });
 
     document.body.classList.remove("local-admin-studio");
     state.adminUnlocked = false;
